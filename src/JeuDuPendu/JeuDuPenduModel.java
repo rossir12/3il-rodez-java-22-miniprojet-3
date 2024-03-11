@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class JeuDuPenduModel {
+	private boolean afficherDefinition;
+	private int tempsLimite;
     private String motADeviner;
     private String definitionMot;
     private StringBuilder motAffiche;
@@ -18,7 +20,7 @@ public class JeuDuPenduModel {
         choisirMot(filePath);
     }
 
-    private void choisirMot(String filePath) {
+    void choisirMot(String filePath) {
         List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -81,6 +83,19 @@ public class JeuDuPenduModel {
 
     public String getMotADeviner() {
         return motADeviner;
+    }
+    
+    public void setDifficulte(boolean afficherDefinition, int tempsLimite) {
+    	this.afficherDefinition = afficherDefinition;
+    	this.tempsLimite = tempsLimite;
+    }
+    
+    public boolean getAfficherDefinition() {
+    	return afficherDefinition;
+    }
+    
+    public int getTempsLimite() {
+    	return tempsLimite;
     }
 }
 

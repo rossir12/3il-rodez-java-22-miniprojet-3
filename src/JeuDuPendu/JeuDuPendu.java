@@ -5,11 +5,12 @@ import javax.swing.*;
 public class JeuDuPendu {
     private final JeuDuPenduModel model;
     private final JeuDuPenduView view;
+    private JeuDuPenduController controller;
 
     public JeuDuPendu() {
         this.model = new JeuDuPenduModel("mots.txt");
         this.view = new JeuDuPenduView();
-        JeuDuPenduController controller = new JeuDuPenduController(model,view);
+        this.controller = new JeuDuPenduController(model,view);
         this.view.setMotAffiche(model.getMotAffiche());
         this.view.addTextFieldListener(e -> verifierLettre());
         this.view.setVisible(true);
@@ -27,15 +28,26 @@ public class JeuDuPendu {
                 view.setErreur(" ");
             }
 
-            if (model.estTermine()) {
-                JOptionPane.showMessageDialog(view, "Félicitations ! Vous avez trouvé le mot : " + model.getMotADeviner());
-            } else if (model.getNombreErreurs() >= 10) {
-                JOptionPane.showMessageDialog(view, "Dommage ! Le mot était : " + model.getMotADeviner());
-            }
+            if (model.estTermine() || model.getNombreErreurs() >= 10) {
+                int response = JOptionPane.showConfirmDialog(view,
+                		model.estTermine() ? "Félicitations ! Vous avez trouvé le mot : " + model.getMotADeviner() : "Dommage ! Le mot était : " + model.getMotADeviner() + "Voulez-vous rejouer ? ",
+                		"Fin de partie", JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                	rejouer();
+                } else {
+                	System.exit(0);
+                }
+        }
         } else {
-            view.setErreur("Veuillez entrer une lettre.");
+        	view.setErreur("Veuillez entrer une lettre.");
         }
         view.clearTextField();
+    }
+    
+    private void rejouer() {
+    	this.model.choisirMot("mots.txt");
+    	this.view.setMotAffiche(model.getMotAffiche());
+    	this.view.setErreur("");
     }
 }
 

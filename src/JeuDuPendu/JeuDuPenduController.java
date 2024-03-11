@@ -46,5 +46,21 @@ public class JeuDuPenduController {
             }
             view.clearTextField();
         };
+        
+        public void configurerDifficulte(String niveau) {
+        	switch(niveau) {
+        	case "Facile":
+        		view.afficherDefinition(true);
+        		break;
+        	case "Moyen":
+        		view.afficherDefinition(false);
+        		view.demarrerTimer(300000);
+        		break;
+        	case "Difficile":
+        		view.afficherDefinition(false);
+        		view.demarrerTimer(120000);
+        		break;
+        	}
+        }
     }
 

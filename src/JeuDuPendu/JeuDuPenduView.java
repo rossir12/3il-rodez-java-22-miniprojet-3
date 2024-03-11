@@ -9,9 +9,14 @@ public class JeuDuPenduView extends JFrame {
     private JTextField textFieldLettre;
     private JLabel labelErreur;
     private DrawPendu drawPendu;
+    private JLabel labelDefinition;
+    private Timer timer;
+    private String definition = "";
 
     public JeuDuPenduView() {
         initialiseGUI();
+        labelDefinition = new JLabel();
+        add(labelDefinition);
     }
 
     private void initialiseGUI() {
@@ -59,5 +64,25 @@ public class JeuDuPenduView extends JFrame {
     
     public void showMessage(String message) {
     	JOptionPane.showMessageDialog(this, message);
+    }
+    
+    public void afficherDefinition(boolean afficher) {
+    	if(afficher) {
+    		labelDefinition.setText(this.definition);
+    	} else {
+    		labelDefinition.setText("");
+    	}
+    }
+       
+    public void demarrerTimer(int duree) {
+    	Timer timer = new Timer(duree, e -> {
+    		JOptionPane.showMessageDialog(this, "Le temps est écoulé !");
+    	});
+    	timer.setRepeats(false);
+    	timer.start();
+    }
+    
+    public void setDefinition(String definition) {
+    	this.definition = definition;
     }
 }
