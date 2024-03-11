@@ -2,12 +2,13 @@ package JeuDuPendu;
 
 import java.awt.event.ActionListener;
 import javax.swing.*;
-import java.awt.*;
 
 public class JeuDuPenduView extends JFrame {
-    private JLabel labelMot;
+    private static final long serialVersionUID = 1L;
+	private JLabel labelMot;
     private JTextField textFieldLettre;
     private JLabel labelErreur;
+    private DrawPendu drawPendu;
 
     public JeuDuPenduView() {
         initialiseGUI();
@@ -19,10 +20,12 @@ public class JeuDuPenduView extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
+        drawPendu = new DrawPendu();
         labelMot = new JLabel("Mot à deviner: ");
         textFieldLettre = new JTextField(20); // Ajustez la taille selon vos besoins
         labelErreur = new JLabel(" ");
 
+        add(drawPendu);
         add(labelMot);
         add(textFieldLettre);
         add(labelErreur);
@@ -48,6 +51,10 @@ public class JeuDuPenduView extends JFrame {
 
     public void addTextFieldListener(ActionListener actionListener) {
         textFieldLettre.addActionListener(actionListener);
+    }
+    
+    public void setNombreErreurs(int nombreErreurs) {
+    	drawPendu.setNombreErreurs(nombreErreurs);
     }
     
     public void showMessage(String message) {

@@ -23,6 +23,7 @@ public class JeuDuPenduController {
                 view.setMotAffiche(model.getMotAffiche());
                 if (!correct) {
                     view.setErreur("Lettre incorrecte. Erreurs: " + model.getNombreErreurs());
+                    view.setNombreErreurs(model.getNombreErreurs());
                 } else {
                     view.setErreur(" ");
                 }
