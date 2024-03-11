@@ -18,7 +18,7 @@ public class JeuDuPenduController {
     
     private void verifierLettre() {
             String lettre = view.getLettre();
-            if (lettre.length() == 1 && Character.isLetter(lettre.charAt(0))) {
+            if (lettre.length() == 1 && (Character.isLetter(lettre.charAt(0)) || lettre.charAt(0) == '-')) {
                 boolean correct = model.verifierLettre(lettre.charAt(0));
                 view.setMotAffiche(model.getMotAffiche());
                 if (!correct) {

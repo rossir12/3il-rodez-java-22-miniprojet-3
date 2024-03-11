@@ -34,7 +34,14 @@ public class JeuDuPenduModel {
         String[] parts = lines.get(0).split(" ", 2);
         motADeviner = parts[0];
         definitionMot = parts.length > 1 ? parts[1] : "Aucune définition disponible";
-        motAffiche = new StringBuilder("_".repeat(motADeviner.length()));
+        motAffiche = new StringBuilder(motADeviner.length());
+        for (char c : motADeviner.toCharArray()) {
+        	if (Character.isLetter(c)) {
+        		motAffiche.append("_");
+        	} else {
+        		motAffiche.append(c);
+        	}
+        }
         nombreErreurs = 0;
     }
 
@@ -46,13 +53,14 @@ public class JeuDuPenduModel {
         lettresProposees.add(lettre);
         boolean lettreTrouvee = false;
         for (int i = 0; i < motADeviner.length(); i++) {
-            if (motADeviner.charAt(i) == lettre) {
-                motAffiche.setCharAt(i, lettre);
+            if (motADeviner.charAt(i) == lettre || !Character.isLetter(motADeviner.charAt(i))) {
+                if (motADeviner.charAt(i) == lettre) {
+            	motAffiche.setCharAt(i, lettre);
                 lettreTrouvee = true;
             }
         }
-
-        if (!lettreTrouvee) {
+    }
+        if (!lettreTrouvee && Character.isLetter(lettre)) {
             nombreErreurs++;
         }
 
