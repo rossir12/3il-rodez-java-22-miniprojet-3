@@ -1,25 +1,25 @@
 package JeuDuPendu;
 
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class JeuDuPenduController {
-    private JeuDuPenduModel model;
-    private JeuDuPenduView view;
+    private final JeuDuPenduModel model;
+    private final JeuDuPenduView view;
 
     public JeuDuPenduController(JeuDuPenduModel model, JeuDuPenduView view) {
         this.model = model;
         this.view = view;
-        this.view.addTextFieldListener(verifierLettre());
-        initView();
+        this.view.setMotAffiche(model.getMotAffiche());
+        setupListeners();
+        this.view.setVisible(true);
     }
-
-    private void initView() {
-        view.setMotAffiche(model.getMotAffiche());
-        view.setVisible(true);
+    
+    private void setupListeners() {
+    	this.view.addTextFieldListener(e -> verifierLettre());
     }
-
-    private ActionListener verifierLettre() {
-        return e -> {
+    
+    private void verifierLettre() {
             String lettre = view.getLettre();
             if (lettre.length() == 1 && Character.isLetter(lettre.charAt(0))) {
                 boolean correct = model.verifierLettre(lettre.charAt(0));
