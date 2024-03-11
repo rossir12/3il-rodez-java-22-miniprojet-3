@@ -1,8 +1,5 @@
 package JeuDuPendu;
 
-import java.awt.event.ActionListener;
-import javax.swing.*;
-
 public class JeuDuPenduController {
     private final JeuDuPenduModel model;
     private final JeuDuPenduView view;
@@ -41,5 +38,4 @@ public class JeuDuPenduController {
             view.clearTextField();
         };
     }
-}
 
