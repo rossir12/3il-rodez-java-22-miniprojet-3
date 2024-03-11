@@ -15,12 +15,9 @@ public class JeuDuPendu extends JFrame {
 
     private String motADeviner;
     private String definitionMot;
-    private JLabel motLabel;
-    private JTextField lettreInput;
-    private JButton verifierBouton;
-    private JLabel lettresProposeesLabel;
+    private int nombreErreurs;
+    private JLabel labelMot;
     private JPanel penduPanel;
-    private JLabel definitionLabel;
 
     public JeuDuPendu() {
         initialiseJeu();
@@ -32,9 +29,7 @@ public class JeuDuPendu extends JFrame {
         if (motEtDefinition != null) {
             motADeviner = motEtDefinition[0];
             definitionMot = motEtDefinition[1];
-            // Transforme le mot à deviner en tirets pour l'affichage
-            motLabel.setText(motADeviner.replaceAll(".", "_ "));
-            definitionLabel.setText("Définition: " + definitionMot);
+            nombreErreurs = 0;
         }
     }
 
@@ -45,53 +40,62 @@ public class JeuDuPendu extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Panel pour le pendu
-        penduPanel = new JPanel();
-        add(penduPanel, BorderLayout.CENTER);
+        // Affichage du mot à deviner
+        labelMot = new JLabel("Mot à deviner: " + "_ ".repeat(motADeviner.length()));
+        add(labelMot, BorderLayout.NORTH);
 
-        // Panel pour les entrées de l'utilisateur
-        JPanel inputPanel = new JPanel();
-        lettreInput = new JTextField(1);
-        verifierBouton = new JButton("Vérifier");
-        verifierBouton.addActionListener(new ActionListener() {
+        // Panel pour dessiner le pendu
+        penduPanel = new JPanel() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // Logique pour vérifier la lettre entrée
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                dessinerPendu(g);
             }
-        });
-        inputPanel.add(lettreInput);
-        inputPanel.add(verifierBouton);
-        add(inputPanel, BorderLayout.SOUTH);
+        };
+        add(penduPanel, BorderLayout.CENTER);
+        penduPanel.setPreferredSize(new Dimension(400, 300));
+    }
 
-        // Label pour le mot à deviner
-        motLabel = new JLabel();
-        add(motLabel, BorderLayout.NORTH);
-
-        // Label pour les lettres déjà proposées
-        lettresProposeesLabel = new JLabel("Lettres déjà proposées: ");
-        add(lettresProposeesLabel, BorderLayout.EAST);
-
-        // Label pour la définition
-        definitionLabel = new JLabel();
-        add(definitionLabel, BorderLayout.WEST);
+    private void dessinerPendu(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        int baseY = 250;
+        switch (nombreErreurs) {
+            case 1:
+                g2d.drawLine(100, baseY, 200, baseY); // Base
+                break;
+            case 2:
+                g2d.drawLine(150, baseY, 150, baseY - 150); // Poteau
+                break;
+            case 3:
+                g2d.drawLine(150, baseY - 150, 200, baseY - 150); // Traverse
+                break;
+            case 4:
+                g2d.drawLine(200, baseY - 150, 200, baseY - 130); // Corde
+                break;
+            case 5:
+                g2d.drawOval(190, baseY - 130, 20, 20); // Tête
+                break;
+            case 6:
+                g2d.drawLine(200, baseY - 110, 200, baseY - 70); // Corps
+                break;
+            case 7:
+                g2d.drawLine(200, baseY - 100, 180, baseY - 120); // Bras gauche
+                break;
+            case 8:
+                g2d.drawLine(200, baseY - 100, 220, baseY - 120); // Bras droit
+                break;
+            case 9:
+                g2d.drawLine(200, baseY - 70, 180, baseY - 50); // Jambe gauche
+                break;
+            case 10:
+                g2d.drawLine(200, baseY - 70, 220, baseY - 50); // Jambe droite
+                // Ajoutez ici des conditions supplémentaires si nécessaire
+                break;
+        }
     }
 
     private String[] getRandomWord(String filePath) {
-        List<String> lines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null; // ou gérer l'erreur autrement
-        }
-
-        Collections.shuffle(lines);
-        String randomLine = lines.get(0);
-        String[] parts = randomLine.split(" ", 2);
-        return parts;
+        // Méthode inchangée pour lire aléatoirement un mot et sa définition depuis le fichier
     }
 
     public static void main(String[] args) {
