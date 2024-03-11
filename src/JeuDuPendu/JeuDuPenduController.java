@@ -1,5 +1,7 @@
 package JeuDuPendu;
 
+import javax.swing.JOptionPane;
+
 public class JeuDuPenduController {
     private final JeuDuPenduModel model;
     private final JeuDuPenduView view;
@@ -29,9 +31,15 @@ public class JeuDuPenduController {
                 }
 
                 if (model.estTermine()) {
-                    view.showMessage("Félicitations ! Vous avez trouvé le mot : " + model.getMotADeviner());
+                    int option = JOptionPane.showConfirmDialog(view, "Félicitations ! Vous avez trouvé le mot : " + model.getMotADeviner());
+                    if(option == JOptionPane.YES_OPTION) {
+                    	System.exit(0);
+                    }
                 } else if (model.getNombreErreurs() >= 10) {
-                    view.showMessage("Dommage ! Le mot était : " + model.getMotADeviner());
+                    int option = JOptionPane.showConfirmDialog(view, "Dommage ! Le mot était : " + model.getMotADeviner());
+                    if (option == JOptionPane.YES_OPTION) {
+                    	System.exit(0);
+                    }
                 }
             } else {
                 view.setErreur("Veuillez entrer une lettre.");
