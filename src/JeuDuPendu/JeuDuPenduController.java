@@ -31,13 +31,23 @@ public class JeuDuPenduController {
                 }
 
                 if (model.estTermine()) {
-                    int option = JOptionPane.showConfirmDialog(view, "Félicitations ! Vous avez trouvé le mot : " + model.getMotADeviner());
+                    int option = JOptionPane.showConfirmDialog(view, "Félicitations ! Vous avez trouvé le mot : " + model.getMotADeviner() + ". Voulez-vous rejouer ?", "Vous avez gagné !", JOptionPane.YES_NO_OPTION);
                     if(option == JOptionPane.YES_OPTION) {
+                    	model.choisirMot("mots.txt");
+                    	view.setMotAffiche(model.getMotAffiche());
+                    	view.setNombreErreurs(0);
+                    	view.setErreur("");
+                    } else {
                     	System.exit(0);
                     }
                 } else if (model.getNombreErreurs() >= 10) {
-                    int option = JOptionPane.showConfirmDialog(view, "Dommage ! Le mot était : " + model.getMotADeviner());
+                    int option = JOptionPane.showConfirmDialog(view, "Dommage ! Le mot était : " + model.getMotADeviner()+ ". Voulez-vous rejouer ?", "Vous avez perdu !", JOptionPane.YES_NO_OPTION);
                     if (option == JOptionPane.YES_OPTION) {
+                    	model.choisirMot("mots.txt");
+                    	view.setMotAffiche(model.getMotAffiche());
+                    	view.setNombreErreurs(0);
+                    	view.setErreur("");
+                    } else {
                     	System.exit(0);
                     }
                 }
