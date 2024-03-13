@@ -10,6 +10,7 @@ public class JeuDuPenduView extends JFrame {
     private JLabel labelErreur;
     private DrawPendu drawPendu;
     private JLabel labelDefinition;
+    private JLabel labelLettresFausses;
     private JeuDuPenduController controller;
 
     public JeuDuPenduView() {
@@ -28,12 +29,14 @@ public class JeuDuPenduView extends JFrame {
         labelErreur = new JLabel(" ");
         labelDefinition = new JLabel("Definition");
         labelDefinition.setVisible(false);
-
+        labelLettresFausses = new JLabel("Lettres Fausses : ");
+        
         add(drawPendu);
         add(labelMot);
         add(textFieldLettre);
         add(labelErreur);
         add(labelDefinition);
+        add(labelLettresFausses);
 
         pack(); // Ajuste la taille de la fenêtre aux composants
     }
@@ -96,7 +99,16 @@ public class JeuDuPenduView extends JFrame {
     	labelDefinition.setText(definition);
     }
     
+    public void setLettresFausses(String lettres) {
+    	labelLettresFausses.setText("Lettres Fausses : " + lettres);
+    }
+    
     public void setController(JeuDuPenduController controller) {
     	this.controller = controller;
     }
+
+	public void redessinerPendu() {
+		drawPendu.repaint();
+		
+	}
 }

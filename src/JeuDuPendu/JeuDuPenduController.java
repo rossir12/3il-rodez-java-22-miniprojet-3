@@ -24,6 +24,7 @@ public class JeuDuPenduController {
             view.setMotAffiche(model.getMotAffiche());
             if (!correct) {
                 view.setErreur("Lettre incorrecte. Erreurs: " + model.getNombreErreurs());
+                view.setLettresFausses(model.getLettresFausses());
                 view.setNombreErreurs(model.getNombreErreurs());
             } else {
                 view.setErreur(" ");
@@ -45,10 +46,8 @@ public class JeuDuPenduController {
                                    : "Dommage ! Le mot était : " + model.getMotADeviner() + ". Voulez-vous rejouer ?";
             int option = JOptionPane.showConfirmDialog(view, message, gagne ? "Vous avez gagné !" : "Vous avez perdu !", JOptionPane.YES_NO_OPTION);
             if (option == JOptionPane.YES_OPTION) {
-                model.choisirMot("mots.txt");
-                view.setMotAffiche(model.getMotAffiche());
-                view.setNombreErreurs(0);
-                view.setErreur("");
+            	model.reinitialiserJeu();
+                demanderNiveauDifficulte();
             } else {
                 System.exit(0);
             }
@@ -71,6 +70,22 @@ public class JeuDuPenduController {
         }
         
         public void demanderNiveauDifficulte() {
-        	view.afficherPromptNiveau();
+            String[] options = {"Facile", "Moyen", "Difficile"};
+            int choix = JOptionPane.showOptionDialog(view, "Choisissez un niveau de difficulté :", "Sélection du niveau", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+            if (choix != JOptionPane.CLOSED_OPTION) {
+                String niveau = options[choix];
+                configurerDifficulte(niveau); // Configurer la difficulté selon le niveau sélectionné
+                model.reinitialiserJeu(); // Réinitialiser le jeu
+                view.setMotAffiche(model.getMotAffiche()); // Mettre à jour l'affichage du mot à deviner
+                view.setNombreErreurs(0); // Réinitialiser le nombre d'erreurs affiché
+                view.setErreur(""); // Effacer les messages d'erreur
+                view.clearTextField(); // Effacer le champ de texte pour entrer une lettre
+                view.setLettresFausses(""); // Effacer les lettres fausses affichées
+                view.redessinerPendu(); // Redessiner le pendu
+                view.setDefinition(""); // Effacer la définition affichée
+            } else {
+                System.exit(0);
+            }
         }
+
     }

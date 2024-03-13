@@ -11,10 +11,10 @@ public class JeuDuPenduModel {
 	private boolean afficherDefinition;
 	private int tempsLimite;
     private String motADeviner;
-    private String definitionMot;
     private StringBuilder motAffiche;
     private int nombreErreurs;
     private final List<Character> lettresProposees = new ArrayList<>();
+    private final List<Character> lettresFausses = new ArrayList<>();
 
     public JeuDuPenduModel(String filePath) {
         choisirMot(filePath);
@@ -35,16 +35,16 @@ public class JeuDuPenduModel {
         Collections.shuffle(lines);
         String[] parts = lines.get(0).split(" ", 2);
         motADeviner = parts[0];
-        definitionMot = parts.length > 1 ? parts[1] : "Aucune définition disponible";
         motAffiche = new StringBuilder(motADeviner.length());
-        for (char c : motADeviner.toCharArray()) {
-        	if (Character.isLetter(c)) {
+        for (int i = 0; i < motADeviner.length(); i++) {
+        	if(Character.isLetter(motADeviner.charAt(i))) {
         		motAffiche.append("_");
         	} else {
-        		motAffiche.append(c);
+        		motAffiche.append(motADeviner.charAt(i));
         	}
         }
         nombreErreurs = 0;
+        lettresProposees.clear();
     }
 
     public boolean verifierLettre(char lettre) {
@@ -62,11 +62,20 @@ public class JeuDuPenduModel {
             }
         }
     }
-        if (!lettreTrouvee && Character.isLetter(lettre)) {
+        if (!lettreTrouvee) {
             nombreErreurs++;
+            if(!lettresFausses.contains(lettre)) {
+            	lettresFausses.add(lettre);
+            }
         }
-
         return lettreTrouvee;
+    }
+    public String getLettresFausses() {
+    	StringBuilder sb = new StringBuilder();
+    	for(Character lettre : lettresFausses) {
+    		sb.append(lettre).append(" ");
+    	}
+    	return sb.toString().trim();
     }
 
     public String getMotAffiche() {
@@ -96,6 +105,13 @@ public class JeuDuPenduModel {
     
     public int getTempsLimite() {
     	return tempsLimite;
+    }
+    
+    public void reinitialiserJeu() {
+    	lettresProposees.clear();
+    	nombreErreurs =0;
+    	choisirMot("mots.txt");
+    	lettresFausses.clear();
     }
 }
 
