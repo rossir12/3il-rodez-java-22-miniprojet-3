@@ -1,8 +1,8 @@
 ---
 titre: Java
 sous-titre: Miniprojet 3 - Pendu avec Swing
-auteur: Philippe \textsc{Roussille}
-date: 3iL 1A 2023
+auteur: Rossi Romain
+date: 3iL 1A 2024
 ---
 
 **Date de rendu du projet : 13/03/2024 - 17h05**
