@@ -9,53 +9,50 @@ public class JeuDuPenduController {
     public JeuDuPenduController(JeuDuPenduModel model, JeuDuPenduView view) {
         this.model = model;
         this.view = view;
-        this.view.setMotAffiche(model.getMotAffiche());
+        this.view.setController(this);
         setupListeners();
         this.view.setVisible(true);
     }
     
     private void setupListeners() {
-    	this.view.addTextFieldListener(e -> verifierLettre());
+    	view.addTextFieldListener(e -> verifierLettre());
     }
-    
-    private void verifierLettre() {
-            String lettre = view.getLettre();
-            if (lettre.length() == 1 && (Character.isLetter(lettre.charAt(0)) || lettre.charAt(0) == '-')) {
-                boolean correct = model.verifierLettre(lettre.charAt(0));
-                view.setMotAffiche(model.getMotAffiche());
-                if (!correct) {
-                    view.setErreur("Lettre incorrecte. Erreurs: " + model.getNombreErreurs());
-                    view.setNombreErreurs(model.getNombreErreurs());
-                } else {
-                    view.setErreur(" ");
-                }
-
-                if (model.estTermine()) {
-                    int option = JOptionPane.showConfirmDialog(view, "Félicitations ! Vous avez trouvé le mot : " + model.getMotADeviner() + ". Voulez-vous rejouer ?", "Vous avez gagné !", JOptionPane.YES_NO_OPTION);
-                    if(option == JOptionPane.YES_OPTION) {
-                    	model.choisirMot("mots.txt");
-                    	view.setMotAffiche(model.getMotAffiche());
-                    	view.setNombreErreurs(0);
-                    	view.setErreur("");
-                    } else {
-                    	System.exit(0);
-                    }
-                } else if (model.getNombreErreurs() >= 10) {
-                    int option = JOptionPane.showConfirmDialog(view, "Dommage ! Le mot était : " + model.getMotADeviner()+ ". Voulez-vous rejouer ?", "Vous avez perdu !", JOptionPane.YES_NO_OPTION);
-                    if (option == JOptionPane.YES_OPTION) {
-                    	model.choisirMot("mots.txt");
-                    	view.setMotAffiche(model.getMotAffiche());
-                    	view.setNombreErreurs(0);
-                    	view.setErreur("");
-                    } else {
-                    	System.exit(0);
-                    }
-                }
+    public void verifierLettre() {
+        String lettre = view.getLettre();
+        if (lettre.length() == 1 && (Character.isLetter(lettre.charAt(0)) || lettre.charAt(0) == '-')) {
+            boolean correct = model.verifierLettre(lettre.charAt(0));
+            view.setMotAffiche(model.getMotAffiche());
+            if (!correct) {
+                view.setErreur("Lettre incorrecte. Erreurs: " + model.getNombreErreurs());
+                view.setNombreErreurs(model.getNombreErreurs());
             } else {
-                view.setErreur("Veuillez entrer une lettre.");
+                view.setErreur(" ");
             }
-            view.clearTextField();
-        };
+
+            if (model.estTermine()) {
+                finDeJeu(true);
+            } else if (model.getNombreErreurs() >= 10) {
+                finDeJeu(false);
+            }
+        } else {
+            view.setErreur("Veuillez entrer une lettre.");
+        }
+        view.clearTextField();
+    }
+        
+        private void finDeJeu(boolean gagne) {
+            String message = gagne ? "Félicitations ! Vous avez trouvé le mot : " + model.getMotADeviner() + ". Voulez-vous rejouer ?"
+                                   : "Dommage ! Le mot était : " + model.getMotADeviner() + ". Voulez-vous rejouer ?";
+            int option = JOptionPane.showConfirmDialog(view, message, gagne ? "Vous avez gagné !" : "Vous avez perdu !", JOptionPane.YES_NO_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                model.choisirMot("mots.txt");
+                view.setMotAffiche(model.getMotAffiche());
+                view.setNombreErreurs(0);
+                view.setErreur("");
+            } else {
+                System.exit(0);
+            }
+        }
         
         public void configurerDifficulte(String niveau) {
         	switch(niveau) {
@@ -72,5 +69,8 @@ public class JeuDuPenduController {
         		break;
         	}
         }
+        
+        public void demanderNiveauDifficulte() {
+        	view.afficherPromptNiveau();
+        }
     }
-

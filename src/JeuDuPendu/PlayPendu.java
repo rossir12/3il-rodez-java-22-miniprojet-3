@@ -7,8 +7,8 @@ public class PlayPendu {
 		SwingUtilities.invokeLater(() -> {
 			JeuDuPenduModel model = new JeuDuPenduModel("mots.txt");
 			JeuDuPenduView view = new JeuDuPenduView();
-			new JeuDuPenduController(model, view);
-			view.setVisible(true);
+			JeuDuPenduController controller = new JeuDuPenduController(model, view);
+			controller.demanderNiveauDifficulte();
 		});
 	}
 }
