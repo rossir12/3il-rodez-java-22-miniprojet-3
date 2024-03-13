@@ -1,4 +1,4 @@
 # HELPERS
 
-* Nom : * ` CHAT`
-* Prénom : * ` GPT` 
+* Nom :  ` CHAT`
+* Prénom :  ` GPT` 
